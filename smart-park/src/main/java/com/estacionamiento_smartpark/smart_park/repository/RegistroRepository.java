@@ -16,9 +16,6 @@ import java.util.Optional;
 
 public interface RegistroRepository extends JpaRepository<Registro, Long> {
 
-    @Query("SELECT COUNT(r) > 0 FROM Registro r WHERE r.auto.id = :autoId AND r.horaSalida IS NULL")
-    boolean tieneRegistroActivo(@Param("autoId") Long autoId);
-
     @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END " +
            "FROM Registro r WHERE r.auto.patente = :patente AND r.horaSalida IS NULL")
     boolean estaEstacionado(@Param("patente") String patente);

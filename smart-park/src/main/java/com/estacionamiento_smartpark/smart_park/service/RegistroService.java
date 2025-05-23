@@ -57,7 +57,7 @@ public class RegistroService {
 
     public Estacionamiento registrarEntrada(String patente, int numeroEstacionamiento) {
         if (registroRepository.estaEstacionado(patente)) {
-            throw new IllegalStateException("El auto ya está estacionado");
+            throw new IllegalStateException("El auto con patente " + patente + " ya tiene un registro activo");
         }
 
         Auto auto = autoRepository.findByPatente(patente)

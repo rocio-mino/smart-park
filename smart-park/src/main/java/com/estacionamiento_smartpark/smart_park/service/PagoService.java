@@ -12,7 +12,10 @@ import com.estacionamiento_smartpark.smart_park.model.Registro;
 import com.estacionamiento_smartpark.smart_park.repository.PagoRepository;
 import com.estacionamiento_smartpark.smart_park.repository.RegistroRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class PagoService {
 
     @Autowired
