@@ -3,11 +3,8 @@ package com.estacionamiento_smartpark.smart_park.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import com.estacionamiento_smartpark.smart_park.model.Auto;
-import com.estacionamiento_smartpark.smart_park.model.Estacionamiento;
 import com.estacionamiento_smartpark.smart_park.model.Registro;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,8 +22,6 @@ public interface RegistroRepository extends JpaRepository<Registro, Long> {
     List<Registro> findByHoraLlegadaBetween(LocalDateTime inicio, LocalDateTime fin);
 
     Optional<Registro> findByAutoAndHoraSalidaIsNull(Auto auto);
-
-    Optional<Estacionamiento> findByAutoPatente(String patente);
 
     @Query("SELECT r FROM Registro r WHERE r.horaSalida IS NULL")
     List<Registro> findRegistrosActivos();

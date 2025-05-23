@@ -83,23 +83,23 @@ public class RegistroService {
     }
 
     public Estacionamiento registrarSalida(String patente) {
-    Auto auto = autoRepository.findByPatente(patente)
-            .orElseThrow(() -> new RuntimeException("Auto no encontrado"));
+        Auto auto = autoRepository.findByPatente(patente)
+                .orElseThrow(() -> new RuntimeException("Auto no encontrado"));
 
-    Registro registro = registroRepository.findByAutoAndHoraSalidaIsNull(auto)
-            .orElseThrow(() -> new RuntimeException("No hay registro activo para este auto"));
+        Registro registro = registroRepository.findByAutoAndHoraSalidaIsNull(auto)
+                .orElseThrow(() -> new RuntimeException("No hay registro activo para este auto"));
 
-    Estacionamiento estacionamiento = estacionamientoRepository.findByAutoPatente(patente)
-            .orElseThrow(() -> new RuntimeException("No hay estacionamiento ocupado por un auto con patente " + patente));
+        Estacionamiento estacionamiento = estacionamientoRepository.findByAutoPatente(patente)
+                .orElseThrow(() -> new RuntimeException("No hay estacionamiento ocupado por un auto con patente " + patente));
 
-    registro.setHoraSalida(LocalDateTime.now());
-    registroRepository.save(registro);
+        registro.setHoraSalida(LocalDateTime.now());
+        registroRepository.save(registro);
 
-    estacionamiento.setOcupado(false);
-    estacionamiento.setAuto(null);
-    estacionamientoRepository.save(estacionamiento);
+        estacionamiento.setOcupado(false);
+        estacionamiento.setAuto(null);
+        estacionamientoRepository.save(estacionamiento);
 
-    return estacionamiento;
+        return estacionamiento;
     }
 
     public List<Registro> obtenerRegistrosActivos() {

@@ -24,7 +24,7 @@ public class SucursalService {
     }
 
     public Sucursal save(Sucursal sucursal) {
-    return sucursalRepository.save(sucursal);
+        return sucursalRepository.save(sucursal);
     }
 
      public void delete(Long id) {
@@ -32,15 +32,15 @@ public class SucursalService {
     }
 
     public Sucursal actualizarSucursal(Long id, Sucursal sucursalActualizada) {
-    Sucursal sucursalExistente = sucursalRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException(id + " no encontrado"));
-    
-    sucursalExistente.setNombre(sucursalActualizada.getNombre());
-    sucursalExistente.setDireccion(sucursalActualizada.getDireccion());
-    sucursalExistente.setTelefono(sucursalActualizada.getTelefono());
-    sucursalExistente.setComuna(sucursalActualizada.getComuna());
-    
-    return sucursalRepository.save(sucursalExistente);
+        Sucursal sucursalExistente = sucursalRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException(id + " no encontrado"));
+        
+        sucursalExistente.setNombre(sucursalActualizada.getNombre());
+        sucursalExistente.setDireccion(sucursalActualizada.getDireccion());
+        sucursalExistente.setTelefono(sucursalActualizada.getTelefono());
+        sucursalExistente.setComuna(sucursalActualizada.getComuna());
+        
+        return sucursalRepository.save(sucursalExistente);
     }
 
     public Sucursal patchSucursal(Long id, Sucursal parcialSucursal) {

@@ -47,7 +47,7 @@ public class PagoService {
         return pagoRepository.save(pago);
     }
 
-     public List<Pago> obtenerTodosLosPagos() {
+    public List<Pago> obtenerTodosLosPagos() {
         return pagoRepository.findAll();
     }
 

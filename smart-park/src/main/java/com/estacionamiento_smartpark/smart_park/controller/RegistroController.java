@@ -80,7 +80,7 @@ public class RegistroController {
         return ResponseEntity.ok(registrosActivos);
     }
 
-     @GetMapping("/fecha")
+    @GetMapping("/fecha")
     public List<Registro> obtenerPorFecha(@RequestParam("fecha") String fechaStr) {
         LocalDate fecha = LocalDate.parse(fechaStr);
         return registroService.obtenerRegistrosPorFecha(fecha);

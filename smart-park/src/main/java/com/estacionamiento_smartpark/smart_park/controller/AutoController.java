@@ -55,7 +55,7 @@ public class AutoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(autoNuevo);
     }
 
-     @PutMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Auto> actualizar(@PathVariable Long id, @RequestBody Auto auto) {
         try {
             Auto autoActualizado = autoService.updateAuto(id, auto);
@@ -65,7 +65,7 @@ public class AutoController {
         }
     }
 
-     @PatchMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Auto> actualizarParcial(@PathVariable Long id, @RequestBody Auto parcialAuto) {
         Auto autoActualizado = autoService.patchAuto(id, parcialAuto);
         if (autoActualizado != null) {
@@ -75,7 +75,7 @@ public class AutoController {
         }
     }
 
-     @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         try {
             autoService.delete(id);

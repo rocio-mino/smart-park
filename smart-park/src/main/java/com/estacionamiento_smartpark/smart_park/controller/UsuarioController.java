@@ -49,7 +49,7 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioNuevo);
     }
 
-     @PutMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Usuario> actualizar(@PathVariable Long id, @RequestBody Usuario usuario) {
         try {
             Usuario usuarioActualizado = usuarioService.actualizarUsuario(id, usuario);
@@ -59,7 +59,7 @@ public class UsuarioController {
         }
     }
 
-     @PatchMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Usuario> actualizarParcial(@PathVariable Long id, @RequestBody Usuario parcialUsuario) {
         Usuario usuarioActualizado = usuarioService.patchUsuario(id, parcialUsuario);
         if (usuarioActualizado != null) {
@@ -69,7 +69,7 @@ public class UsuarioController {
         }
     }
 
-     @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         try {
             usuarioService.eliminarUsuario(id);

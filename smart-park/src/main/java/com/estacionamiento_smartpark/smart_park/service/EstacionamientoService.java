@@ -31,36 +31,36 @@ public class EstacionamientoService {
     }
 
     public Estacionamiento actualizarEstacionamiento(Long id, Estacionamiento estacionamientoActualizado) {
-    Estacionamiento estacionamientoExistente = estacionamientoRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Estacionamiento con ID " + id + " no encontrado"));
-    
-    estacionamientoExistente.setNumero(estacionamientoActualizado.getNumero());
-    estacionamientoExistente.setOcupado(estacionamientoActualizado.isOcupado());
-    estacionamientoExistente.setSucursal(estacionamientoActualizado.getSucursal());
-    estacionamientoExistente.setAuto(estacionamientoActualizado.getAuto());
-    
-    return estacionamientoRepository.save(estacionamientoExistente);
-}
+        Estacionamiento estacionamientoExistente = estacionamientoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Estacionamiento con ID " + id + " no encontrado"));
+        
+        estacionamientoExistente.setNumero(estacionamientoActualizado.getNumero());
+        estacionamientoExistente.setOcupado(estacionamientoActualizado.isOcupado());
+        estacionamientoExistente.setSucursal(estacionamientoActualizado.getSucursal());
+        estacionamientoExistente.setAuto(estacionamientoActualizado.getAuto());
+        
+        return estacionamientoRepository.save(estacionamientoExistente);
+    }
 
-public Estacionamiento patchEstacionamiento(Long id, Estacionamiento parcialEstacionamiento) {
-    Estacionamiento estacionamiento = estacionamientoRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Estacionamiento no encontrado"));
-    
-    if (parcialEstacionamiento.getNumero() != 0) {
-        estacionamiento.setNumero(parcialEstacionamiento.getNumero());
+    public Estacionamiento patchEstacionamiento(Long id, Estacionamiento parcialEstacionamiento) {
+        Estacionamiento estacionamiento = estacionamientoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Estacionamiento no encontrado"));
+        
+        if (parcialEstacionamiento.getNumero() != 0) {
+            estacionamiento.setNumero(parcialEstacionamiento.getNumero());
+        }
+        
+        estacionamiento.setOcupado(parcialEstacionamiento.isOcupado());
+        
+        if (parcialEstacionamiento.getSucursal() != null) {
+            estacionamiento.setSucursal(parcialEstacionamiento.getSucursal());
+        }
+        if (parcialEstacionamiento.getAuto() != null) {
+            estacionamiento.setAuto(parcialEstacionamiento.getAuto());
+        }
+        
+        return estacionamientoRepository.save(estacionamiento);
     }
-    
-    estacionamiento.setOcupado(parcialEstacionamiento.isOcupado());
-    
-    if (parcialEstacionamiento.getSucursal() != null) {
-        estacionamiento.setSucursal(parcialEstacionamiento.getSucursal());
-    }
-    if (parcialEstacionamiento.getAuto() != null) {
-        estacionamiento.setAuto(parcialEstacionamiento.getAuto());
-    }
-    
-    return estacionamientoRepository.save(estacionamiento);
-}
 
     public Optional<Estacionamiento> findByNumero(int numero) {
         return estacionamientoRepository.findByNumero(numero);

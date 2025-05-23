@@ -47,57 +47,56 @@ public class UsuarioService {
     }
 
     public Usuario actualizarUsuario(Long id, Usuario usuarioActualizado) {
-    Usuario usuarioExistente = usuarioRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Usuario con ID " + id + " no encontrado"));
+        Usuario usuarioExistente = usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario con ID " + id + " no encontrado"));
 
-    if (usuarioActualizado.getCorreo() == null || usuarioActualizado.getCorreo().isBlank()) {
-        throw new IllegalArgumentException("El correo no puede estar vacío.");
-    }
+        if (usuarioActualizado.getCorreo() == null || usuarioActualizado.getCorreo().isBlank()) {
+            throw new IllegalArgumentException("El correo no puede estar vacío.");
+        }
 
-    if (usuarioActualizado.getRun() == null || usuarioActualizado.getRun().isBlank()) {
-        throw new IllegalArgumentException("El RUN no puede estar vacío.");
-    }
+        if (usuarioActualizado.getRun() == null || usuarioActualizado.getRun().isBlank()) {
+            throw new IllegalArgumentException("El RUN no puede estar vacío.");
+        }
 
-    if (usuarioActualizado.getNombreCompleto() == null || usuarioActualizado.getNombreCompleto().isBlank()) {
-        throw new IllegalArgumentException("El nombre no puede estar vacío.");
-    }
+        if (usuarioActualizado.getNombreCompleto() == null || usuarioActualizado.getNombreCompleto().isBlank()) {
+            throw new IllegalArgumentException("El nombre no puede estar vacío.");
+        }
 
-    if (!usuarioExistente.getCorreo().equals(usuarioActualizado.getCorreo()) &&
-        usuarioRepository.existsByCorreo(usuarioActualizado.getCorreo())) {
-        throw new IllegalStateException("El correo ya está registrado por otro usuario.");
-    }
+        if (!usuarioExistente.getCorreo().equals(usuarioActualizado.getCorreo()) &&
+            usuarioRepository.existsByCorreo(usuarioActualizado.getCorreo())) {
+            throw new IllegalStateException("El correo ya está registrado por otro usuario.");
+        }
 
-    if (!usuarioExistente.getRun().equals(usuarioActualizado.getRun()) &&
-        usuarioRepository.existsByRun(usuarioActualizado.getRun())) {
-        throw new IllegalStateException("El RUN ya está registrado por otro usuario.");
-    }
+        if (!usuarioExistente.getRun().equals(usuarioActualizado.getRun()) &&
+            usuarioRepository.existsByRun(usuarioActualizado.getRun())) {
+            throw new IllegalStateException("El RUN ya está registrado por otro usuario.");
+        }
 
-    usuarioExistente.setCorreo(usuarioActualizado.getCorreo());
-    usuarioExistente.setRun(usuarioActualizado.getRun());
-    usuarioExistente.setNombreCompleto(usuarioActualizado.getNombreCompleto());
+        usuarioExistente.setCorreo(usuarioActualizado.getCorreo());
+        usuarioExistente.setRun(usuarioActualizado.getRun());
+        usuarioExistente.setNombreCompleto(usuarioActualizado.getNombreCompleto());
 
-    return usuarioRepository.save(usuarioExistente);
+        return usuarioRepository.save(usuarioExistente);
     }
 
     public Usuario patchUsuario(Long id, Usuario parcialUsuario) {
-    return usuarioRepository.findById(id).map(usuarioToUpdate -> {
+        return usuarioRepository.findById(id).map(usuarioToUpdate -> {
 
-        if (parcialUsuario.getCorreo() != null) {
-            usuarioToUpdate.setCorreo(parcialUsuario.getCorreo());
-        }
+            if (parcialUsuario.getCorreo() != null) {
+                usuarioToUpdate.setCorreo(parcialUsuario.getCorreo());
+            }
 
-        if (parcialUsuario.getRun() != null) {
-            usuarioToUpdate.setRun(parcialUsuario.getRun());
-        }
+            if (parcialUsuario.getRun() != null) {
+                usuarioToUpdate.setRun(parcialUsuario.getRun());
+            }
 
-        if (parcialUsuario.getNombreCompleto() != null) {
-            usuarioToUpdate.setNombreCompleto(parcialUsuario.getNombreCompleto());
-        }
+            if (parcialUsuario.getNombreCompleto() != null) {
+                usuarioToUpdate.setNombreCompleto(parcialUsuario.getNombreCompleto());
+            }
 
-        return usuarioRepository.save(usuarioToUpdate);
-    }).orElseThrow(() -> new RuntimeException("Usuario con ID " + id + " no encontrado"));
+            return usuarioRepository.save(usuarioToUpdate);
+        }).orElseThrow(() -> new RuntimeException("Usuario con ID " + id + " no encontrado"));
     }
-
 
 
 }
