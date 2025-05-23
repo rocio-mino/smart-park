@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 import com.estacionamiento_smartpark.smart_park.model.Auto;
 import com.estacionamiento_smartpark.smart_park.model.Estacionamiento;
 import com.estacionamiento_smartpark.smart_park.model.Registro;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -31,4 +33,7 @@ public interface RegistroRepository extends JpaRepository<Registro, Long> {
 
     @Query("SELECT r FROM Registro r WHERE r.horaSalida IS NULL")
     List<Registro> findRegistrosActivos();
+
+    @Query("SELECT r FROM Registro r WHERE DATE(r.horaLlegada) = :fecha")
+    List<Registro> findByFecha(@Param("fecha") LocalDate fecha);
 }

@@ -1,5 +1,6 @@
 package com.estacionamiento_smartpark.smart_park.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -77,5 +78,11 @@ public class RegistroController {
     public ResponseEntity<List<Registro>> obtenerRegistrosActivos() {
         List<Registro> registrosActivos = registroService.obtenerRegistrosActivos();
         return ResponseEntity.ok(registrosActivos);
+    }
+
+     @GetMapping("/fecha")
+    public List<Registro> obtenerPorFecha(@RequestParam("fecha") String fechaStr) {
+        LocalDate fecha = LocalDate.parse(fechaStr);
+        return registroService.obtenerRegistrosPorFecha(fecha);
     }
 }
