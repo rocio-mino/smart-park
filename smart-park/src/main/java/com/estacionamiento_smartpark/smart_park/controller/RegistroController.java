@@ -72,4 +72,10 @@ public class RegistroController {
     public ResponseEntity<Estacionamiento> registrarSalida(@RequestParam String patente) {
         return ResponseEntity.ok(registroService.registrarSalida(patente));
     }
+
+    @GetMapping("/activos")
+    public ResponseEntity<List<Registro>> obtenerRegistrosActivos() {
+        List<Registro> registrosActivos = registroService.obtenerRegistrosActivos();
+        return ResponseEntity.ok(registrosActivos);
+    }
 }

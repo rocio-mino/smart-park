@@ -99,6 +99,10 @@ public class RegistroService {
     estacionamientoRepository.save(estacionamiento);
 
     return estacionamiento;
-}
+    }
+
+    public List<Registro> obtenerRegistrosActivos() {
+        return registroRepository.findRegistrosActivos();
+    }
 
 }

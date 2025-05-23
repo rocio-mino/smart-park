@@ -28,4 +28,7 @@ public interface RegistroRepository extends JpaRepository<Registro, Long> {
     Optional<Registro> findByAutoAndHoraSalidaIsNull(Auto auto);
 
     Optional<Estacionamiento> findByAutoPatente(String patente);
+
+    @Query("SELECT r FROM Registro r WHERE r.horaSalida IS NULL")
+    List<Registro> findRegistrosActivos();
 }
