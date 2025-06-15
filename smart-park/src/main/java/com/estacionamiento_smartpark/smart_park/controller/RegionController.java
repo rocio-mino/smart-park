@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.estacionamiento_smartpark.smart_park.model.Region;
 import com.estacionamiento_smartpark.smart_park.service.RegionService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,12 +25,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/v1/regiones")
+@Tag(name = "Regiones", description = "Operaciones relacionadas con las regiones") 
 public class RegionController {
     @Autowired
 
     private RegionService regionService;
 
     @GetMapping
+    @Operation(summary = "Obtener todas las regiones", description = "Obtiene una lista de todas las regiones")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "No se puede listar las regiones") 
+    }) 
     public ResponseEntity<List<Region>> listar(){
         List<Region> regiones = regionService.findAll();
         if (regiones.isEmpty()) {
@@ -34,6 +46,11 @@ public class RegionController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener región", description = "Obtiene región por id")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "Región no encontrada") 
+    })  
     public ResponseEntity<Region> buscar(@PathVariable Long id) {
         try {
             Region region = regionService.findById(id);
@@ -44,12 +61,22 @@ public class RegionController {
     }
 
     @PostMapping
+    @Operation(summary = "Crea una nueva región", description = "Crea región")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "No se pudo crear la región") 
+    }) 
     public ResponseEntity<Region> guardar(@RequestBody Region region) {
         Region regionNueva = regionService.save(region);
         return ResponseEntity.status(HttpStatus.CREATED).body(regionNueva);
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar una región", description = "Actualiza todos los datos de la región")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "Región no actualizada") 
+    }) 
     public ResponseEntity<Region> actualizar(@PathVariable Long id, @RequestBody Region region) {
         try {
             Region regionActualizado = regionService.updateRegion(id, region);
@@ -60,6 +87,11 @@ public class RegionController {
     }
 
     @PatchMapping("/{id}")
+    @Operation(summary = "Actualizar una región", description = "Actualiza algunos datos de la región")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "Región no actualizada") 
+    })
     public ResponseEntity<Region> actualizarParcial(@PathVariable Long id, @RequestBody Region parcialRegion) {
         Region regionActualizado = regionService.patchRegion(id, parcialRegion);
         if (regionActualizado != null) {
@@ -70,6 +102,11 @@ public class RegionController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar una región", description = "Elimina región por id")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "Región no encontrada") 
+    })
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         try {
             regionService.delete(id);

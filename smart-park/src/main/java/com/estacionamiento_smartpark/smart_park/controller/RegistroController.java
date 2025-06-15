@@ -18,51 +18,68 @@ import com.estacionamiento_smartpark.smart_park.model.Estacionamiento;
 import com.estacionamiento_smartpark.smart_park.model.Registro;
 import com.estacionamiento_smartpark.smart_park.service.RegistroService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/v1/registros")
+@Tag(name = "Registros", description = "Operaciones relacionadas con los registros") 
 public class RegistroController {
 
     @Autowired
     private RegistroService registroService;
 
     @GetMapping
+    @Operation(summary = "Obtener todos los registros", description = "Obtiene una lista de todos los registros")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "No se puede listar los registros") 
+    }) 
     public ResponseEntity<List<Registro>> obtenerTodos() {
         return ResponseEntity.ok(registroService.findAll());
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener registro", description = "Obtiene registro por id")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "Registro no encontrado") 
+    })  
     public ResponseEntity<Registro> obtenerPorId(@PathVariable Long id) {
         return registroService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/patente/{patente}")
-    public ResponseEntity<List<Registro>> obtenerPorPatente(@PathVariable String patente) {
-        return ResponseEntity.ok(registroService.obtenerRegistrosPorPatente(patente));
-    }
-
-    @GetMapping("/rango")
-    public ResponseEntity<List<Registro>> obtenerPorRangoFechas(
-            @RequestParam("inicio") String inicio,
-            @RequestParam("fin") String fin) {
-        LocalDateTime fechaInicio = LocalDateTime.parse(inicio);
-        LocalDateTime fechaFin = LocalDateTime.parse(fin);
-        return ResponseEntity.ok(registroService.obtenerRegistrosEntreFechas(fechaInicio, fechaFin));
-    }
-
     @PostMapping
+    @Operation(summary = "Crea un nuevo registro", description = "Crea registro")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "No se pudo crear el registro") 
+    }) 
     public ResponseEntity<Registro> crearRegistro(@RequestBody Registro registro) {
         return ResponseEntity.ok(registroService.save(registro));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar un registro", description = "Elimina registro por id")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "Registro no encontrado") 
+    })
     public ResponseEntity<Void> eliminarRegistro(@PathVariable Long id) {
         registroService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/entrada")
+    @Operation(summary = "Crea un nueva entrada", description = "Crea entrada")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "No se pudo crear la entrada") 
+    }) 
     public ResponseEntity<Estacionamiento> registrarEntrada(
             @RequestParam String patente,
             @RequestParam int numeroEstacionamiento) {
@@ -70,19 +87,58 @@ public class RegistroController {
     }
 
     @PostMapping("/salida")
+    @Operation(summary = "Crea un nueva salida", description = "Crea salida")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "No se pudo crear la salida") 
+    }) 
     public ResponseEntity<Estacionamiento> registrarSalida(@RequestParam String patente) {
         return ResponseEntity.ok(registroService.registrarSalida(patente));
     }
 
     @GetMapping("/activos")
+    @Operation(summary = "Obtener registros activos", description = "Obtiene registros activos")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "No se listaron los registros") 
+    }) 
     public ResponseEntity<List<Registro>> obtenerRegistrosActivos() {
         List<Registro> registrosActivos = registroService.obtenerRegistrosActivos();
         return ResponseEntity.ok(registrosActivos);
     }
 
     @GetMapping("/fecha")
+    @Operation(summary = "Obtener registro por fecha", description = "Obtiene registro por fecha")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "Registro no encontrado") 
+    }) 
     public List<Registro> obtenerPorFecha(@RequestParam("fecha") String fechaStr) {
         LocalDate fecha = LocalDate.parse(fechaStr);
         return registroService.obtenerRegistrosPorFecha(fecha);
+    }
+
+    @GetMapping("/patente/{patente}")
+    @Operation(summary = "Obtener registros por patente", description = "Lista todos los registros de la patente")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "No hay registros de la patente") 
+    }) 
+    public ResponseEntity<List<Registro>> obtenerPorPatente(@PathVariable String patente) {
+        return ResponseEntity.ok(registroService.obtenerRegistrosPorPatente(patente));
+    }
+
+    @GetMapping("/rango")
+    @Operation(summary = "Obtener registro por rango", description = "Obtiene registros por rango de fecha")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "No se listaron los registros") 
+    }) 
+    public ResponseEntity<List<Registro>> obtenerPorRangoFechas(
+            @RequestParam("inicio") String inicio,
+            @RequestParam("fin") String fin) {
+        LocalDateTime fechaInicio = LocalDateTime.parse(inicio);
+        LocalDateTime fechaFin = LocalDateTime.parse(fin);
+        return ResponseEntity.ok(registroService.obtenerRegistrosEntreFechas(fechaInicio, fechaFin));
     }
 }

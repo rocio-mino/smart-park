@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.estacionamiento_smartpark.smart_park.model.Comuna;
 import com.estacionamiento_smartpark.smart_park.service.ComunaService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,11 +25,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/v1/comunas")
+@Tag(name = "Comunas", description = "Operaciones relacionadas con las comunas") 
 public class ComunaController {
     @Autowired
     private ComunaService comunaService;
 
     @GetMapping
+    @Operation(summary = "Obtener todas las comunas", description = "Obtiene una lista de todas las comunas")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "No se puede listar los autos") 
+    }) 
     public ResponseEntity<List<Comuna>> listar(){
         List<Comuna> comuna = comunaService.findAll();
         if (comuna.isEmpty()) {
@@ -34,6 +46,11 @@ public class ComunaController {
 
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener comuna", description = "Obtiene comuna por id")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "comuna no encontrado") 
+    })  
     public ResponseEntity<Comuna> buscar(@PathVariable Long id) {
         try {
             Comuna comuna = comunaService.findById(id);
@@ -44,12 +61,22 @@ public class ComunaController {
     }
 
     @PostMapping
+    @Operation(summary = "Crea una nueva comuna", description = "Crea comuna")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "No se pudo crear la comuna") 
+    }) 
     public ResponseEntity<Comuna> guardar(@RequestBody Comuna comuna) {
         Comuna comunaNueva = comunaService.save(comuna);
         return ResponseEntity.status(HttpStatus.CREATED).body(comunaNueva);
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar una comuna", description = "Actualiza todos los datos de la comuna")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "Comuna no actualizada") 
+    }) 
     public ResponseEntity<Comuna> actualizar(@PathVariable Long id, @RequestBody Comuna comuna) {
         try {
             Comuna comunaActualizado = comunaService.updateComuna(id, comuna);
@@ -60,6 +87,11 @@ public class ComunaController {
     }
 
     @PatchMapping("/{id}")
+    @Operation(summary = "Actualizar una comuna", description = "Actualiza algunos datos de la comuna")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "Comuna no actualizada") 
+    }) 
     public ResponseEntity<Comuna> actualizarParcial(@PathVariable Long id, @RequestBody Comuna parcialComuna) {
         Comuna comunaActualizado = comunaService.patchComuna(id, parcialComuna);
         if (comunaActualizado != null) {
@@ -70,6 +102,11 @@ public class ComunaController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar una comuna", description = "Elimina comuna por id")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "Comuna no encontrada") 
+    })
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         try {
             comunaService.delete(id);
