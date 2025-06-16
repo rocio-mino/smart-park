@@ -77,4 +77,9 @@ public class SucursalService {
     public List<Sucursal> findByComunaId(Long comunaId) {
         return sucursalRepository.findByComunaId(comunaId);
     }
+
+    public List<Sucursal> findByNombreAndComunaId(String nombre, Long comunaId){
+        return sucursalRepository.findByNombreAndComunaId(nombre, comunaId);
+    }
+
 }

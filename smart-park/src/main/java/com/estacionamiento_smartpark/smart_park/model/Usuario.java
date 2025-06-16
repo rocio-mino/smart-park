@@ -2,6 +2,8 @@ package com.estacionamiento_smartpark.smart_park.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,6 +36,7 @@ public class Usuario {
     @Column(unique = true, nullable=false,  length = 70)
     private String correo;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable=false,  length = 70)
     private String contraseña;
 

@@ -14,4 +14,6 @@ public interface SucursalRepository extends JpaRepository<Sucursal, Long> {
 
     List<Sucursal> findByComunaId(Long comunaId);
 
+    List<Sucursal> findByNombreAndComunaId(String nombre, Long comunaId);
+
 }

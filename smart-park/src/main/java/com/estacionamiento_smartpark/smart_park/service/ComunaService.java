@@ -75,6 +75,11 @@ public class ComunaService {
         return comunaRepository.findByRegionId(regionId);
     }
 
+    public List<Comuna> findByNombreAndRegionId(String nombre, Long regionId){
+        return comunaRepository.findByNombreAndRegionId(nombre, regionId);
+    }
+
+
 
 
 }

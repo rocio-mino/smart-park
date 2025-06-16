@@ -148,4 +148,23 @@ public class SucursalController {
         return sucursalService.findByComunaId(comunaId);
     }
 
+    @GetMapping("/buscar")
+    @Operation(summary = "Obtener sucursal", description = "Obtiene una sucursal por nombre y comuna")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"),
+        @ApiResponse(responseCode = "404", description = "No se encontro la sucursal")
+    })
+    public ResponseEntity<List<Sucursal>> buscarPorNombreYComuna(
+            @RequestParam String nombre,
+            @RequestParam Long comunaId) {
+        List<Sucursal> sucursales = sucursalService.findByNombreAndComunaId(nombre, comunaId);
+
+
+        if (sucursales.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(sucursales);
+    }
+
+
 }

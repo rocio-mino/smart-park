@@ -14,4 +14,6 @@ public interface ComunaRepository extends JpaRepository<Comuna, Long> {
 
     List<Comuna> findByRegionId(Long regionId);
 
+    List<Comuna> findByNombreAndRegionId(String nombre, Long regionId);
+
 }

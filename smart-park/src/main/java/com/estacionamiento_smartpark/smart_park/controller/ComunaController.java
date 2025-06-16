@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.estacionamiento_smartpark.smart_park.model.Comuna;
 import com.estacionamiento_smartpark.smart_park.service.ComunaService;
@@ -115,5 +116,24 @@ public class ComunaController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/buscar")
+    @Operation(summary = "Busca una comuna", description = "Busca comuna por nombre y region")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"),
+        @ApiResponse(responseCode = "404", description = "Comuna no encontrada")
+    })
+    public ResponseEntity<List<Comuna>> buscarPorNombreYRegion(
+            @RequestParam String nombre,
+            @RequestParam Long regionId) {
+        List<Comuna> comunas = comunaService.findByNombreAndRegionId(nombre, regionId);
+
+
+        if (comunas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(comunas);
+    }
+
 
 }
