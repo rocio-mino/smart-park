@@ -116,5 +116,14 @@ public class AutoController {
         }
     }
 
+    @GetMapping("/datos-usuarios")
+    @Operation(summary = "Datos Usuario", description = "Lista los datos del usuario del auto")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"),
+        @ApiResponse(responseCode = "404", description = "No se pudo listar los datos")
+    })
+    public List<Object[]> obtenerDatosAutosYUsuarios() {
+        return autoService.obtenerDatosAutosYUsuarios();
+    }
 
 }

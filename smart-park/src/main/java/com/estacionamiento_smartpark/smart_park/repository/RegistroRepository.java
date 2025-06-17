@@ -28,4 +28,9 @@ public interface RegistroRepository extends JpaRepository<Registro, Long> {
 
     @Query("SELECT r FROM Registro r WHERE DATE(r.horaLlegada) = :fecha")
     List<Registro> findByFecha(@Param("fecha") LocalDate fecha);
+
+    @Query("SELECT r.id, a.patente, r.horaLlegada, r.horaSalida FROM Registro r JOIN r.auto a")
+    List<Object[]> findEntradaysalida();
+
+
 }

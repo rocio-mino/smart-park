@@ -86,4 +86,9 @@ public class EstacionamientoService {
         return estacionamientoRepository.findByAutoPatente(patente);
     }
 
+    public List<Object[]> obtenerEstacionamientosConAutosYUsuarios() {
+        return estacionamientoRepository.findEstacionamientosConAutosYUsuarios();
+    }
+
+
 }

@@ -110,4 +110,9 @@ public class RegistroService {
         return registroRepository.findByFecha(fecha);
     }
 
+    public List<Object[]> obtenerEntradasYSalidas() {
+        return registroRepository.findEntradaysalida();
+    }
+
+
 }

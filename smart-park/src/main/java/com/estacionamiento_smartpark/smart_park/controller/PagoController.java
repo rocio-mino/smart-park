@@ -117,4 +117,14 @@ public class PagoController {
     public ResponseEntity<Pago> actualizarPago(@RequestBody Pago pago){
         return ResponseEntity.ok(pagoService.actualizarPago(pago));
     }
+
+    @GetMapping("/detalles-registro")
+    @Operation(summary = "Listar pagos con detalles de registro", description = "Devuelve fecha de pago, monto, hora de llegada y hora de salida")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operación exitosa"),
+            @ApiResponse(responseCode = "404", description = "No se encontraron registros")
+    })
+    public List<Object[]> obtenerPagosConDetallesRegistro() {
+        return pagoService.obtenerPagosConDetallesRegistro();
+    }
 }

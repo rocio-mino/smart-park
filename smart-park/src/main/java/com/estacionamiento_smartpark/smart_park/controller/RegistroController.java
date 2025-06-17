@@ -141,4 +141,15 @@ public class RegistroController {
         LocalDateTime fechaFin = LocalDateTime.parse(fin);
         return ResponseEntity.ok(registroService.obtenerRegistrosEntreFechas(fechaInicio, fechaFin));
     }
+
+    @GetMapping("/entradas-salidas")
+    @Operation(summary = "Obtener entradas y salidas", description = "lista entradas y salidas")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"),
+        @ApiResponse(responseCode = "404", description = "No se listaron las entradas y salidas")
+    })
+    public List<Object[]> getEntradasSalidas() {
+        return registroService.obtenerEntradasYSalidas();
+    }
+    
 }

@@ -69,5 +69,9 @@ public class AutoService {
         }
     }
 
+    public List<Object[]> obtenerDatosAutosYUsuarios() {
+        return autoRepository.findDatosAutosYUsuarios();
+    }
+
 
 }

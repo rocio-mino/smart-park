@@ -156,5 +156,16 @@ public class EstacionamientoController {
         estacionamientoService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/con-autos-usuarios")
+    @Operation(summary = "Lista de estacionamientos con autos y usuarios",
+               description = "Obtiene el número del estacionamiento, patente del auto y nombre del usuario")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Datos obtenidos correctamente"),
+        @ApiResponse(responseCode = "404", description = "No se encontraron datos")
+    })
+    public List<Object[]> obtenerEstacionamientosConAutosYUsuarios() {
+        return estacionamientoService.obtenerEstacionamientosConAutosYUsuarios();
+    }
 }
 

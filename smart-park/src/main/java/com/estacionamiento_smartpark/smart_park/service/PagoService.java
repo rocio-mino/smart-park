@@ -78,4 +78,9 @@ public class PagoService {
     public boolean existePagoParaRegistro(Long registroId) {
         return pagoRepository.existsByRegistroId(registroId);
     }
+
+    public List<Object[]> obtenerPagosConDetallesRegistro() {
+        return pagoRepository.findPagosConDetallesRegistro();
+    }
+
 }
