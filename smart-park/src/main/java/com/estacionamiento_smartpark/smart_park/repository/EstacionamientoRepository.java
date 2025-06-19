@@ -3,7 +3,10 @@ package com.estacionamiento_smartpark.smart_park.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.estacionamiento_smartpark.smart_park.model.Auto;
 import com.estacionamiento_smartpark.smart_park.model.Estacionamiento;
+import com.estacionamiento_smartpark.smart_park.model.Sucursal;
+
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +32,10 @@ public interface EstacionamientoRepository extends JpaRepository<Estacionamiento
        "JOIN e.auto a " +
        "JOIN a.usuario u")
     List<Object[]> findEstacionamientosConAutosYUsuarios();
+
+    void deleteByAuto(Auto auto);
+
+    void deleteBySucursal(Sucursal sucursal);
 
 
     

@@ -51,12 +51,36 @@ public class PagoService {
         return pagoRepository.findAll();
     }
 
-    public Optional<Pago> obtenerPagoPorId(Long id) {
-        return pagoRepository.findById(id);
+    public Pago findById(Long id) {
+        return pagoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Pago con ID " + id + " no encontrado"));
     }
 
     public Pago actualizarPago(Pago pago) {
         return pagoRepository.save(pago);
+    }
+
+    public Pago patchPago(Long id, Pago parcialPago) {
+    return pagoRepository.findById(id).map(pagoToUpdate -> {
+
+        if (parcialPago.getFechaPago() != null) {
+            pagoToUpdate.setFechaPago(parcialPago.getFechaPago());
+        }
+
+        if (parcialPago.getMonto() != null) {
+            pagoToUpdate.setMonto(parcialPago.getMonto());
+        }
+
+        if (parcialPago.getMetodo() != null) {
+            pagoToUpdate.setMetodo(parcialPago.getMetodo());
+        }
+
+        if (parcialPago.getRegistro() != null) {
+            pagoToUpdate.setRegistro(parcialPago.getRegistro());
+        }
+
+        return pagoRepository.save(pagoToUpdate);
+        }).orElseThrow(() -> new RuntimeException("Pago con ID " + id + " no encontrado"));
     }
 
     public void eliminarPago(Long id) {
@@ -81,6 +105,10 @@ public class PagoService {
 
     public List<Object[]> obtenerPagosConDetallesRegistro() {
         return pagoRepository.findPagosConDetallesRegistro();
+    }
+
+    public void deleteByRegistro(Registro registro) {
+        pagoRepository.deleteByRegistro(registro);
     }
 
 }

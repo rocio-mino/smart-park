@@ -1,7 +1,6 @@
 package com.estacionamiento_smartpark.smart_park.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,18 +47,14 @@ public class SucursalController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener sucursal", description = "Obtiene sucursal por id")
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
-        @ApiResponse(responseCode = "404", description = "Sucursal no encontrada") 
-    })  
-    public ResponseEntity<Optional<Sucursal>> buscar(@PathVariable Long id) {
-        try {
-            Optional<Sucursal> sucursal = sucursalService.findById(id);
-            return ResponseEntity.ok(sucursal);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    @Operation(summary = "Obtener una sucursal por ID", description = "Retorna una sucursal específica utilizando su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Sucursal encontrada"),
+        @ApiResponse(responseCode = "404", description = "Sucursal no encontrada")
+    })
+    public ResponseEntity<Sucursal> getSucursalById(@PathVariable Long id) {
+        Sucursal sucursal = sucursalService.findById(id);
+        return ResponseEntity.ok(sucursal);
     }
 
     @PostMapping

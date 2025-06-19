@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.estacionamiento_smartpark.smart_park.model.Comuna;
 import com.estacionamiento_smartpark.smart_park.model.Sucursal;
 import com.estacionamiento_smartpark.smart_park.repository.SucursalRepository;
 import jakarta.transaction.Transactional;
@@ -15,12 +16,16 @@ public class SucursalService {
     @Autowired
     private SucursalRepository sucursalRepository;
 
+    @Autowired
+    private EstacionamientoService estacionamientoService;
+
     public List<Sucursal> findAll() {
         return sucursalRepository.findAll();
     }
 
-    public Optional<Sucursal> findById(Long id) {
-        return sucursalRepository.findById(id);
+    public Sucursal findById(Long id) {
+        return sucursalRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Sucursal con ID " + id + " no encontrada"));
     }
 
     public Sucursal save(Sucursal sucursal) {
@@ -28,6 +33,8 @@ public class SucursalService {
     }
 
      public void delete(Long id) {
+        Sucursal sucursal = sucursalRepository.findById(id).get();
+        estacionamientoService.deleteBySucursal(sucursal);
         sucursalRepository.deleteById(id);
     }
 
@@ -80,6 +87,10 @@ public class SucursalService {
 
     public List<Sucursal> findByNombreAndComunaId(String nombre, Long comunaId){
         return sucursalRepository.findByNombreAndComunaId(nombre, comunaId);
+    }
+
+    public void deleteByComuna(Comuna comuna){
+        sucursalRepository.deleteByComuna(comuna);
     }
 
 }

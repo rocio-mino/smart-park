@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -15,6 +14,9 @@ import jakarta.transaction.Transactional;
 public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private AutoService autoService;
 
     public Usuario crearUsuario(Usuario usuario){
         if (usuarioRepository.existsByCorreo(usuario.getCorreo())){
@@ -30,8 +32,9 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public Optional<Usuario> obtenerPorId(Long id){
-        return usuarioRepository.findById(id);
+    public Usuario obtenerPorId(Long id) {
+        return usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario con ID " + id + " no encontrado"));
     }
 
 
@@ -39,11 +42,13 @@ public class UsuarioService {
         return usuarioRepository.findByNombreCompleto(nombre);
     }
 
-    public void eliminarUsuario(Long id){
-        if (!usuarioRepository.existsById(id)){
-            throw new IllegalStateException("Usuario no encontrado");
-        }
-        usuarioRepository.deleteById(id);
+    public void eliminarUsuario(Long id) {
+    if (!usuarioRepository.existsById(id)) {
+        throw new IllegalStateException("Usuario no encontrado");
+    }
+    Usuario usuario = usuarioRepository.findById(id).get();
+    autoService.deleteByUsuario(usuario);
+    usuarioRepository.deleteById(id);
     }
 
     public Usuario actualizarUsuario(Long id, Usuario usuarioActualizado) {

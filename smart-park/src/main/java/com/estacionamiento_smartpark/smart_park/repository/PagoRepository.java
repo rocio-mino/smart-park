@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.estacionamiento_smartpark.smart_park.model.Pago;
+import com.estacionamiento_smartpark.smart_park.model.Registro;
+
 import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,5 +27,6 @@ public interface PagoRepository extends JpaRepository<Pago, Long> {
        "JOIN p.registro r")
     List<Object[]> findPagosConDetallesRegistro();
 
+    void deleteByRegistro(Registro registro);
 
 }

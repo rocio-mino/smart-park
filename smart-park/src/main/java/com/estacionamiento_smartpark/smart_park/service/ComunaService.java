@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.estacionamiento_smartpark.smart_park.model.Comuna;
+import com.estacionamiento_smartpark.smart_park.model.Region;
 import com.estacionamiento_smartpark.smart_park.repository.ComunaRepository;
 
 import jakarta.transaction.Transactional;
@@ -16,6 +17,9 @@ import jakarta.transaction.Transactional;
 public class ComunaService {
     @Autowired
     private ComunaRepository comunaRepository;
+
+    @Autowired
+    private SucursalService sucursalService;
 
     public List<Comuna> findAll(){
         return comunaRepository.findAll();        
@@ -31,6 +35,8 @@ public class ComunaService {
     }
 
     public void delete(Long id){
+        Comuna comuna = comunaRepository.findById(id).get();
+        sucursalService.deleteByComuna(comuna);
         comunaRepository.deleteById(id);
     }
 
@@ -67,19 +73,12 @@ public class ComunaService {
         return comunaRepository.findByCodigo(codigo);
     }
 
-    public List<Comuna> findByNombre(String nombre) {
-        return comunaRepository.findByNombre(nombre);
-    }
-
-    public List<Comuna> findByRegionId(Long regionId) {
-        return comunaRepository.findByRegionId(regionId);
-    }
-
     public List<Comuna> findByNombreAndRegionId(String nombre, Long regionId){
         return comunaRepository.findByNombreAndRegionId(nombre, regionId);
     }
 
-
-
+    public void deleteByRegion(Region region){
+        comunaRepository.deleteByRegion(region);
+    }
 
 }

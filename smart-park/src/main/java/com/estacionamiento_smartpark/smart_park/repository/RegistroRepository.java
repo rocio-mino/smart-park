@@ -32,5 +32,7 @@ public interface RegistroRepository extends JpaRepository<Registro, Long> {
     @Query("SELECT r.id, a.patente, r.horaLlegada, r.horaSalida FROM Registro r JOIN r.auto a")
     List<Object[]> findEntradaysalida();
 
+    void deleteByAuto(Auto auto);
+
 
 }

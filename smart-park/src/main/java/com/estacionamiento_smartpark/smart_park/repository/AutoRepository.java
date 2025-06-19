@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.estacionamiento_smartpark.smart_park.model.Auto;
+import com.estacionamiento_smartpark.smart_park.model.Usuario;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,5 +22,8 @@ public interface AutoRepository extends JpaRepository<Auto, Long> {
            "FROM Auto a " +
            "JOIN a.usuario u")
     List<Object[]> findDatosAutosYUsuarios();
+
+    void deleteByUsuario(Usuario usuario);
+
 
 }

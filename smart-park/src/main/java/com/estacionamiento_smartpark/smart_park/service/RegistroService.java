@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -28,6 +27,9 @@ public class RegistroService {
     @Autowired
     private EstacionamientoRepository estacionamientoRepository;
 
+    @Autowired
+    private PagoService pagoService;
+
     public Registro save(Registro registro) {
         return registroRepository.save(registro);
     }
@@ -36,13 +38,36 @@ public class RegistroService {
         return registroRepository.findAll();
     }
 
-    public Optional<Registro> findById(Long id) {
-        return registroRepository.findById(id);
+    public Registro findById(Long id) {
+        return registroRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Registro con ID " + id + " no encontrado"));
     }
 
     public void deleteById(Long id) {
+        Registro registro = registroRepository.findById(id).get();
+        pagoService.deleteByRegistro(registro);
         registroRepository.deleteById(id);
     }
+
+    public Registro patchRegistro(Long id, Registro parcialRegistro) {
+        return registroRepository.findById(id).map(registroToUpdate -> {
+
+            if (parcialRegistro.getHoraLlegada() != null) {
+                registroToUpdate.setHoraLlegada(parcialRegistro.getHoraLlegada());
+            }
+
+            if (parcialRegistro.getHoraSalida() != null) {
+                registroToUpdate.setHoraSalida(parcialRegistro.getHoraSalida());
+            }
+
+            if (parcialRegistro.getAuto() != null) {
+                registroToUpdate.setAuto(parcialRegistro.getAuto());
+            }
+
+            return registroRepository.save(registroToUpdate);
+        }).orElseThrow(() -> new RuntimeException("Registro con ID " + id + " no encontrado"));
+    }
+
 
     public List<Registro> obtenerRegistrosPorPatente(String patente) {
         return registroRepository.findByAuto_Patente(patente);
@@ -114,5 +139,8 @@ public class RegistroService {
         return registroRepository.findEntradaysalida();
     }
 
+    public void deleteByAuto(Auto auto) {
+        registroRepository.deleteByAuto(auto);
+    }
 
 }

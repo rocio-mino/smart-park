@@ -1,7 +1,6 @@
 package com.estacionamiento_smartpark.smart_park.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,9 +46,9 @@ public class EstacionamientoController {
         @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
         @ApiResponse(responseCode = "404", description = "Estacionamiento no encontrado") 
     })  
-    public ResponseEntity<Estacionamiento> obtenerPorId(@PathVariable Long id) {
-        Optional<Estacionamiento> est = estacionamientoService.findById(id);
-        return est.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Estacionamiento> getEstacionamientoById(@PathVariable Long id) {
+        Estacionamiento estacionamiento = estacionamientoService.findById(id);
+        return ResponseEntity.ok(estacionamiento);
     }
 
     @GetMapping("/numero/{numero}")

@@ -1,7 +1,6 @@
 package com.estacionamiento_smartpark.smart_park.controller;
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,14 +43,14 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener usuario", description = "Obtiene usuario por id")
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
-        @ApiResponse(responseCode = "404", description = "Usuario no encontrado") 
-    })  
-    public ResponseEntity<Usuario> obtenerPorId(@PathVariable("id") Long id) {
-        Optional<Usuario> usuario = usuarioService.obtenerPorId(id);
-        return usuario.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    @Operation(summary = "Obtener usuario por ID", description = "Retorna un usuario según su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Usuario encontrado"),
+        @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id) {
+        Usuario usuario = usuarioService.obtenerPorId(id);
+        return ResponseEntity.ok(usuario);
     }
 
     @GetMapping("/nombre/{nombre}")

@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.estacionamiento_smartpark.smart_park.model.Auto;
 import com.estacionamiento_smartpark.smart_park.model.Estacionamiento;
+import com.estacionamiento_smartpark.smart_park.model.Sucursal;
 import com.estacionamiento_smartpark.smart_park.repository.EstacionamientoRepository;
 import jakarta.transaction.Transactional;
 
@@ -18,8 +21,9 @@ public class EstacionamientoService {
         return estacionamientoRepository.findAll();
     }
 
-    public Optional<Estacionamiento> findById(Long id) {
-        return estacionamientoRepository.findById(id);
+    public Estacionamiento findById(Long id) {
+        return estacionamientoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Estacionamiento con ID " + id + " no encontrado"));
     }
 
     public Estacionamiento save(Estacionamiento estacionamiento) {
@@ -88,6 +92,14 @@ public class EstacionamientoService {
 
     public List<Object[]> obtenerEstacionamientosConAutosYUsuarios() {
         return estacionamientoRepository.findEstacionamientosConAutosYUsuarios();
+    }
+
+    public void deleteByAuto(Auto auto){
+        estacionamientoRepository.deleteByAuto(auto);
+    }
+
+    public void deleteBySucursal(Sucursal sucursal){
+        estacionamientoRepository.deleteBySucursal(sucursal);
     }
 
 

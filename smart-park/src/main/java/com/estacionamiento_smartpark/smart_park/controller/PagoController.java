@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
@@ -59,9 +60,9 @@ public class PagoController {
         @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
         @ApiResponse(responseCode = "404", description = "Pago no encontrado") 
     })  
-    public ResponseEntity<Pago> obtenerPorId(@PathVariable Long id){
-        Optional<Pago> pago = pagoService.obtenerPagoPorId(id);
-        return pago.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Pago> getPagoById(@PathVariable Long id) {
+        Pago pago = pagoService.findById(id);
+        return ResponseEntity.ok(pago);
     }
 
     @GetMapping("/metodo/{metodo}")
@@ -117,6 +118,22 @@ public class PagoController {
     public ResponseEntity<Pago> actualizarPago(@RequestBody Pago pago){
         return ResponseEntity.ok(pagoService.actualizarPago(pago));
     }
+
+    @PatchMapping("/{id}")
+    @Operation(summary = "Actualizar parcial un pago", description = "Actualiza algunos datos del pago")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "Pago no actualizado") 
+    }) 
+    public ResponseEntity<Pago> patchPago(@PathVariable Long id, @RequestBody Pago parcialPago) {
+        try {
+            Pago pagoActualizado = pagoService.patchPago(id, parcialPago);
+            return ResponseEntity.ok(pagoActualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
     @GetMapping("/detalles-registro")
     @Operation(summary = "Listar pagos con detalles de registro", description = "Devuelve fecha de pago, monto, hora de llegada y hora de salida")

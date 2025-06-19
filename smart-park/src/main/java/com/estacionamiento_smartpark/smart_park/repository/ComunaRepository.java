@@ -2,6 +2,8 @@ package com.estacionamiento_smartpark.smart_park.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.estacionamiento_smartpark.smart_park.model.Comuna;
+import com.estacionamiento_smartpark.smart_park.model.Region;
+
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
@@ -10,10 +12,9 @@ public interface ComunaRepository extends JpaRepository<Comuna, Long> {
 
     Comuna findByCodigo(int codigo);
 
-    List<Comuna> findByNombre(String nombre);
-
-    List<Comuna> findByRegionId(Long regionId);
-
     List<Comuna> findByNombreAndRegionId(String nombre, Long regionId);
+
+    void deleteByRegion(Region region);
+
 
 }

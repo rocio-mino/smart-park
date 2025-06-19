@@ -3,6 +3,7 @@ package com.estacionamiento_smartpark.smart_park.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.estacionamiento_smartpark.smart_park.model.Auto;
+import com.estacionamiento_smartpark.smart_park.model.Usuario;
 import com.estacionamiento_smartpark.smart_park.repository.AutoRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -14,6 +15,12 @@ public class AutoService {
 
     @Autowired
     private AutoRepository autoRepository;
+
+    @Autowired
+    private RegistroService registroService;
+
+    @Autowired
+    private EstacionamientoService estacionamientoService;
 
     public List<Auto> findAll(){
         return autoRepository.findAll();        
@@ -28,9 +35,13 @@ public class AutoService {
         return autoRepository.save(auto);
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
+        Auto auto = autoRepository.findById(id).get();
+        registroService.deleteByAuto(auto);
+        estacionamientoService.deleteByAuto(auto);
         autoRepository.deleteById(id);
     }
+
 
     public Auto actualizarAuto(Long id, Auto autoActualizado) {
         Auto autoExistente = autoRepository.findById(id)
@@ -71,6 +82,10 @@ public class AutoService {
 
     public List<Object[]> obtenerDatosAutosYUsuarios() {
         return autoRepository.findDatosAutosYUsuarios();
+    }
+
+    public void deleteByUsuario(Usuario usuario) {
+        autoRepository.deleteByUsuario(usuario);
     }
 
 

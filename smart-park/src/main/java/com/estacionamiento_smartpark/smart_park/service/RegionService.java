@@ -7,12 +7,16 @@ import com.estacionamiento_smartpark.smart_park.repository.RegionRepository;
 import com.estacionamiento_smartpark.smart_park.model.Region;
 import java.util.List;
 
+
 @Service
 @Transactional
 public class RegionService {
 
     @Autowired
-     private RegionRepository regionRepository;
+    private RegionRepository regionRepository;
+
+    @Autowired
+    private ComunaService comunaService;
 
     public List<Region> findAll(){
         return regionRepository.findAll();
@@ -22,7 +26,9 @@ public class RegionService {
         return regionRepository.save(region);
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
+        Region region = regionRepository.findById(id).get();
+        comunaService.deleteByRegion(region);
         regionRepository.deleteById(id);
     }
 
@@ -53,7 +59,8 @@ public class RegionService {
     }
 
     public Region findById(Long id) {
-        return regionRepository.getById(id);
+        return regionRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException(id + "no encontrado"));
     }
 
     public Region findByNombre(String nombre) {

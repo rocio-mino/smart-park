@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,10 +48,9 @@ public class RegistroController {
         @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
         @ApiResponse(responseCode = "404", description = "Registro no encontrado") 
     })  
-    public ResponseEntity<Registro> obtenerPorId(@PathVariable Long id) {
-        return registroService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Registro> getRegistroById(@PathVariable Long id) {
+        Registro registro = registroService.findById(id);
+        return ResponseEntity.ok(registro);
     }
 
     @PostMapping
@@ -72,6 +72,21 @@ public class RegistroController {
     public ResponseEntity<Void> eliminarRegistro(@PathVariable Long id) {
         registroService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    @Operation(summary = "Actualizar parcial", description = "Actualizar registro por id")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
+        @ApiResponse(responseCode = "404", description = "Registro no encontrado") 
+    })
+    public ResponseEntity<Registro> patchRegistro(@PathVariable Long id, @RequestBody Registro parcialRegistro) {
+        try {
+            Registro registroActualizado = registroService.patchRegistro(id, parcialRegistro);
+            return ResponseEntity.ok(registroActualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/entrada")

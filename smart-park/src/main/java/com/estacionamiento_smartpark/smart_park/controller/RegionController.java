@@ -1,10 +1,13 @@
 package com.estacionamiento_smartpark.smart_park.controller;
 
 import java.util.List;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.estacionamiento_smartpark.smart_park.model.Region;
 import com.estacionamiento_smartpark.smart_park.service.RegionService;
@@ -46,18 +49,14 @@ public class RegionController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener región", description = "Obtiene región por id")
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Operación exitosa"), 
-        @ApiResponse(responseCode = "404", description = "Región no encontrada") 
-    })  
-    public ResponseEntity<Region> buscar(@PathVariable Long id) {
-        try {
-            Region region = regionService.findById(id);
-            return ResponseEntity.ok(region);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    @Operation(summary = "Obtener región por ID", description = "Retorna una región según su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Región encontrada"),
+        @ApiResponse(responseCode = "404", description = "Región no encontrada")
+    })
+    public ResponseEntity<Region> getRegionById(@PathVariable Long id) {
+        Region region = regionService.findById(id);
+        return ResponseEntity.ok(region);
     }
 
     @PostMapping
@@ -112,6 +111,21 @@ public class RegionController {
             regionService.delete(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/buscar")
+    @Operation(summary = "Buscar región por nombre", description = "Retorna una región si existe el nombre")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Región encontrada"),
+        @ApiResponse(responseCode = "404", description = "Región no encontrada")
+    })
+    public ResponseEntity<Region> obtenerPorNombre(@RequestParam String nombre) {
+        Region region = regionService.findByNombre(nombre);
+        if (region != null) {
+            return ResponseEntity.ok(region);
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
