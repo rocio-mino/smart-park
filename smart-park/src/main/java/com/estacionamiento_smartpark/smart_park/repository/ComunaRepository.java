@@ -14,7 +14,10 @@ public interface ComunaRepository extends JpaRepository<Comuna, Long> {
 
     List<Comuna> findByNombreAndRegionId(String nombre, Long regionId);
 
+    //para poder eliminar por cascada
     void deleteByRegion(Region region);
+    Comuna findByRegion(Region region);
+    
 
 
 }

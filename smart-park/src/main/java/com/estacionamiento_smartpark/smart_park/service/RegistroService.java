@@ -44,8 +44,8 @@ public class RegistroService {
     }
 
     public void deleteById(Long id) {
-        Registro registro = registroRepository.findById(id).get();
-        pagoService.deleteByRegistro(registro);
+        Registro r = registroRepository.findById(id).orElseThrow();
+        pagoService.deleteByRegistro(r);
         registroRepository.deleteById(id);
     }
 
@@ -139,7 +139,12 @@ public class RegistroService {
         return registroRepository.findEntradaysalida();
     }
 
+    //para eliminar por cascada
     public void deleteByAuto(Auto auto) {
+        List<Registro> registros = registroRepository.findByAuto(auto);
+        for (Registro r : registros) {
+            pagoService.deleteByRegistro(r);
+        }
         registroRepository.deleteByAuto(auto);
     }
 

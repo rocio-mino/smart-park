@@ -107,6 +107,7 @@ public class PagoService {
         return pagoRepository.findPagosConDetallesRegistro();
     }
 
+    //para eliminar por cascada
     public void deleteByRegistro(Registro registro) {
         pagoRepository.deleteByRegistro(registro);
     }

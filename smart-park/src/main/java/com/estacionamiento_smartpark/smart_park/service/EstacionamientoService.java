@@ -17,6 +17,9 @@ public class EstacionamientoService {
     @Autowired
     private EstacionamientoRepository estacionamientoRepository;
 
+    @Autowired
+    private AutoService autoService;
+
     public List<Estacionamiento> findAll() {
         return estacionamientoRepository.findAll();
     }
@@ -31,6 +34,10 @@ public class EstacionamientoService {
     }
 
     public void deleteById(Long id) {
+        Estacionamiento e = estacionamientoRepository.findById(id).orElseThrow();
+        if (e.getAuto() != null) {
+            autoService.delete(e.getAuto().getId());
+        }
         estacionamientoRepository.deleteById(id);
     }
 
@@ -94,11 +101,18 @@ public class EstacionamientoService {
         return estacionamientoRepository.findEstacionamientosConAutosYUsuarios();
     }
 
+    //para poder eliminar por cascada
     public void deleteByAuto(Auto auto){
         estacionamientoRepository.deleteByAuto(auto);
     }
 
-    public void deleteBySucursal(Sucursal sucursal){
+    public void deleteBySucursal(Sucursal sucursal) {
+        List<Estacionamiento> estacionamientos = estacionamientoRepository.findBySucursal(sucursal);
+        for (Estacionamiento e : estacionamientos) {
+            if (e.getAuto() != null) {
+                autoService.delete(e.getAuto().getId());
+            }
+        }
         estacionamientoRepository.deleteBySucursal(sucursal);
     }
 

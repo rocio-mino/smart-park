@@ -32,8 +32,8 @@ public class SucursalService {
         return sucursalRepository.save(sucursal);
     }
 
-     public void delete(Long id) {
-        Sucursal sucursal = sucursalRepository.findById(id).get();
+    public void delete(Long id) {
+        Sucursal sucursal = sucursalRepository.findById(id).orElseThrow();
         estacionamientoService.deleteBySucursal(sucursal);
         sucursalRepository.deleteById(id);
     }
@@ -89,7 +89,9 @@ public class SucursalService {
         return sucursalRepository.findByNombreAndComunaId(nombre, comunaId);
     }
 
-    public void deleteByComuna(Comuna comuna){
+    public void deleteByComuna(Comuna comuna) {
+        Sucursal sucursal = sucursalRepository.findByComuna(comuna);
+        estacionamientoService.deleteBySucursal(sucursal);
         sucursalRepository.deleteByComuna(comuna);
     }
 

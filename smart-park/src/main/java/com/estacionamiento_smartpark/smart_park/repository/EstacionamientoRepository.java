@@ -35,7 +35,10 @@ public interface EstacionamientoRepository extends JpaRepository<Estacionamiento
 
     void deleteByAuto(Auto auto);
 
+    //para podr eliminar porcascada
     void deleteBySucursal(Sucursal sucursal);
+    List<Estacionamiento> findBySucursal(Sucursal sucursal);
+    
 
 
     

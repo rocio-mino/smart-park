@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import com.estacionamiento_smartpark.smart_park.model.Auto;
 import com.estacionamiento_smartpark.smart_park.model.Usuario;
 import com.estacionamiento_smartpark.smart_park.repository.AutoRepository;
+import com.estacionamiento_smartpark.smart_park.repository.EstacionamientoRepository;
+
 import jakarta.transaction.Transactional;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class AutoService {
     private RegistroService registroService;
 
     @Autowired
-    private EstacionamientoService estacionamientoService;
+    private EstacionamientoRepository estacionamientoRepository;
 
     public List<Auto> findAll(){
         return autoRepository.findAll();        
@@ -36,9 +38,10 @@ public class AutoService {
     }
 
     public void delete(Long id) {
-        Auto auto = autoRepository.findById(id).get();
+        Auto auto = autoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Auto con ID " + id + " no encontrado"));
         registroService.deleteByAuto(auto);
-        estacionamientoService.deleteByAuto(auto);
+        estacionamientoRepository.deleteByAuto(auto);
         autoRepository.deleteById(id);
     }
 

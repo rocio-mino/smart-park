@@ -18,6 +18,8 @@ public interface SucursalRepository extends JpaRepository<Sucursal, Long> {
 
     List<Sucursal> findByNombreAndComunaId(String nombre, Long comunaId);
 
+    //para poder eliminar por cascada
+    Sucursal findByComuna(Comuna comuna);
     void deleteByComuna(Comuna comuna);
 
 }

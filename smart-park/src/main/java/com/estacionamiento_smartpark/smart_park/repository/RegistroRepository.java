@@ -32,7 +32,10 @@ public interface RegistroRepository extends JpaRepository<Registro, Long> {
     @Query("SELECT r.id, a.patente, r.horaLlegada, r.horaSalida FROM Registro r JOIN r.auto a")
     List<Object[]> findEntradaysalida();
 
+    //para poder eliminar por cascada
     void deleteByAuto(Auto auto);
+    List<Registro> findByAuto(Auto auto);
+    
 
 
 }

@@ -27,6 +27,7 @@ public interface PagoRepository extends JpaRepository<Pago, Long> {
        "JOIN p.registro r")
     List<Object[]> findPagosConDetallesRegistro();
 
+    //para poder eliminar por cascada
     void deleteByRegistro(Registro registro);
-
+    
 }

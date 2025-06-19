@@ -23,7 +23,9 @@ public interface AutoRepository extends JpaRepository<Auto, Long> {
            "JOIN a.usuario u")
     List<Object[]> findDatosAutosYUsuarios();
 
+    //para poder eliminar por cascada
     void deleteByUsuario(Usuario usuario);
+    List<Auto> findByUsuario(Usuario usuario);
 
 
 }

@@ -27,7 +27,7 @@ public class RegionService {
     }
 
     public void delete(Long id) {
-        Region region = regionRepository.findById(id).get();
+        Region region = regionRepository.findById(id).orElseThrow();
         comunaService.deleteByRegion(region);
         regionRepository.deleteById(id);
     }

@@ -34,8 +34,8 @@ public class ComunaService {
         return comunaRepository.save(comuna);
     }
 
-    public void delete(Long id){
-        Comuna comuna = comunaRepository.findById(id).get();
+    public void delete(Long id) {
+        Comuna comuna = comunaRepository.findById(id).orElseThrow();
         sucursalService.deleteByComuna(comuna);
         comunaRepository.deleteById(id);
     }
@@ -77,7 +77,9 @@ public class ComunaService {
         return comunaRepository.findByNombreAndRegionId(nombre, regionId);
     }
 
-    public void deleteByRegion(Region region){
+    public void deleteByRegion(Region region) {
+        Comuna comuna = comunaRepository.findByRegion(region);
+        sucursalService.deleteByComuna(comuna);
         comunaRepository.deleteByRegion(region);
     }
 
